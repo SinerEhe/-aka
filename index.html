@@ -3,49 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GÖKALP & CEMİL</title>
+<title>GÖKALP & CEMİL - Bisiklet Yarışı</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
   body {
-    margin: 0; padding: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #fff;
+    color: white;
+    margin: 0; padding: 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-
   header {
-    padding: 40px 20px;
-    text-align: center;
     font-size: 3.5rem;
     font-weight: 700;
-    letter-spacing: 8px;
-    color: #f5f5f5;
+    margin: 40px 0 20px 0;
     user-select: none;
     text-shadow: 0 0 20px #e0e0e0;
   }
-
-  main {
-    width: 90%;
-    max-width: 900px;
-    background: rgba(255 255 255 / 0.1);
-    border-radius: 25px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    padding: 30px;
-    margin-bottom: 50px;
-  }
-
   .buttons {
     display: flex;
-    justify-content: center;
     gap: 40px;
     margin-bottom: 30px;
   }
-
   button {
     background: #6a7bd8;
     border: none;
@@ -59,156 +41,184 @@
     box-shadow: 0 0 20px #6a7bd8;
     user-select: none;
   }
-
   button:hover {
     background: #4f5ecb;
     transform: scale(1.05);
     box-shadow: 0 0 35px #4f5ecb;
   }
-
-  #chatBox, #cemilOutput {
-    background: rgba(0,0,0,0.4);
+  #dogPhoto {
+    margin-top: 20px;
+    max-width: 400px;
     border-radius: 15px;
+    box-shadow: 0 0 25px #6a7bd8;
+  }
+  #raceSection {
+    display: none;
+    width: 90%;
+    max-width: 600px;
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 20px;
     padding: 20px;
-    min-height: 250px;
-    max-height: 400px;
-    overflow-y: auto;
-    font-size: 1.1rem;
-    line-height: 1.5;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    user-select: none;
   }
-
-  #chatInput {
-    width: 100%;
-    padding: 15px 20px;
-    border-radius: 30px;
-    border: none;
-    margin-top: 15px;
-    font-size: 1rem;
+  #track {
+    position: relative;
+    height: 120px;
+    background: linear-gradient(90deg, #333 25%, #444 25%, #444 50%, #333 50%, #333 75%, #444 75%, #444 100%);
+    background-size: 50px 100%;
+    border-radius: 15px;
+    margin-bottom: 25px;
   }
-
-  #chatInput:focus {
-    outline: none;
-    box-shadow: 0 0 10px #6a7bd8;
+  .racer {
+    position: absolute;
+    bottom: 15px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 15px #fff;
   }
-
-  .message {
-    margin: 10px 0;
+  #gokalpRacer {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png'); /* bisikletçi simgesi */
+    left: 0;
+    bottom: 70px;
   }
-
-  .message.user {
-    text-align: right;
-    color: #a8d0ff;
+  #cemilRacer {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/2920/2920793.png'); /* başka bisikletçi simgesi */
+    left: 0;
+    bottom: 10px;
   }
-
-  .message.bot {
-    text-align: left;
-    color: #ffd36e;
+  #commands {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
   }
-
-  /* Scrollbar */
-  #chatBox::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  #chatBox::-webkit-scrollbar-thumb {
-    background: #6a7bd8;
-    border-radius: 4px;
+  #status {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    min-height: 40px;
   }
 </style>
 </head>
 <body>
 
-<header>GÖKALP &amp; CEMİL</header>
+<header>GÖKALP & CEMİL</header>
 
-<main>
-  <div class="buttons">
-    <button id="gokalpBtn">GÖKALP</button>
-    <button id="cemilBtn">CEMİL</button>
+<div class="buttons">
+  <button id="gokalpBtn">GÖKALP</button>
+  <button id="cemilBtn">CEMİL</button>
+</div>
+
+<img id="dogPhoto" src="" alt="Köpek Fotoğrafı" style="display:none;" />
+
+<div id="raceSection">
+  <div id="track">
+    <div id="gokalpRacer" class="racer"></div>
+    <div id="cemilRacer" class="racer"></div>
   </div>
-
-  <div id="chatSection" style="display:none;">
-    <div id="chatBox"></div>
-    <input type="text" id="chatInput" placeholder="Mesajını yaz, enter'a bas..." autocomplete="off" />
+  <div id="commands">
+    <button data-action="forward">İleri</button>
+    <button data-action="speedup">Hızlan</button>
+    <button data-action="slowdown">Yavaşla</button>
   </div>
-
-  <div id="cemilOutput" style="display:none; font-weight:700; font-size:1.4rem; text-align:center; padding: 50px 20px;"></div>
-</main>
+  <div id="status"></div>
+</div>
 
 <script>
   const gokalpBtn = document.getElementById('gokalpBtn');
   const cemilBtn = document.getElementById('cemilBtn');
-  const chatSection = document.getElementById('chatSection');
-  const chatBox = document.getElementById('chatBox');
-  const chatInput = document.getElementById('chatInput');
-  const cemilOutput = document.getElementById('cemilOutput');
+  const dogPhoto = document.getElementById('dogPhoto');
+  const raceSection = document.getElementById('raceSection');
+  const gokalpRacer = document.getElementById('gokalpRacer');
+  const cemilRacer = document.getElementById('cemilRacer');
+  const commands = document.getElementById('commands');
+  const status = document.getElementById('status');
 
-  // Köpeklerle ilgili basit AI tarzı cevaplar (çok basit örnek)
-  const dogReplies = [
-    "Köpekler gerçekten sadık dostlardır, sen ne düşünüyorsun?",
-    "En sevdiğin köpek türü hangisi?",
-    "Köpeklerle vakit geçirmsek insanın ruhunu iyileştirir.",
-    "Sence köpekler duyguları anlayabilir mi?",
-    "Köpek beslemek hayatı nasıl etkiler sence?"
+  // Köpek fotoğrafları URL listesi (CC0 - ücretsiz kaynaklardan)
+  const dogImages = [
+    "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=400&q=80"
   ];
 
-  // Cemil butonuna basınca rastgele kelimeler
-  const cemilWords = [
-    "Ömür", "Bacak", "Kılıç", "Yıldız", "Rüzgar", "Deniz", "Dağ", "Kılıç", "Ateş", "Güneş"
-  ];
+  // Yarış durum değişkenleri
+  let gokalpPos = 0; // px olarak ilerleme
+  let cemilPos = 0;
+  let gokalpSpeed = 10;
+  let cemilSpeed = 8;
+  let raceFinished = false;
 
-  // GÖKALP butonuna basınca chat aç
-  gokalpBtn.onclick = () => {
-    cemilOutput.style.display = 'none';
-    chatSection.style.display = 'block';
-    chatBox.innerHTML = '';
-    chatInput.value = '';
-    chatInput.focus();
-
-    // Bot ilk mesajı atsın
-    addBotMessage("Merhaba! Köpekler hakkında sohbet edelim, ne düşünüyorsun?");
-  };
-
-  // CEMİL butonuna basınca rastgele mesaj oluştur
-  cemilBtn.onclick = () => {
-    chatSection.style.display = 'none';
-    cemilOutput.style.display = 'block';
-
-    // Rastgele 3 kelimeden oluşan cümle
-    const getRandomWord = () => cemilWords[Math.floor(Math.random() * cemilWords.length)];
-    const message = `${getRandomWord()} ile ${getRandomWord()} ve ${getRandomWord()} sihirli bir macera!`;
-    cemilOutput.textContent = message;
-  };
-
-  // Mesaj ekleme fonksiyonları
-  function addUserMessage(msg) {
-    const div = document.createElement('div');
-    div.className = 'message user';
-    div.textContent = msg;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  function resetRace() {
+    gokalpPos = 0;
+    cemilPos = 0;
+    gokalpSpeed = 10;
+    cemilSpeed = 8;
+    raceFinished = false;
+    gokalpRacer.style.left = '0px';
+    cemilRacer.style.left = '0px';
+    status.textContent = 'Yarış başladı! Komutları kullanarak yönlendirin.';
   }
 
-  function addBotMessage(msg) {
-    const div = document.createElement('div');
-    div.className = 'message bot';
-    div.textContent = msg;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  function updatePositions() {
+    gokalpRacer.style.left = gokalpPos + 'px';
+    cemilRacer.style.left = cemilPos + 'px';
   }
 
-  // Chat input enter ile cevap al
-  chatInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && chatInput.value.trim() !== '') {
-      const userMsg = chatInput.value.trim();
-      addUserMessage(userMsg);
-      chatInput.value = '';
-
-      // Basit AI: köpek sohbeti, random cevap
-      setTimeout(() => {
-        const reply = dogReplies[Math.floor(Math.random() * dogReplies.length)];
-        addBotMessage(reply);
-      }, 700);
+  function checkWinner() {
+    const finishLine = raceSection.clientWidth - gokalpRacer.clientWidth - 10;
+    if (gokalpPos >= finishLine && cemilPos >= finishLine) {
+      raceFinished = true;
+      status.textContent = 'Berabere kaldınız! İkiniz de aynı anda bitirdiniz.';
+    } else if (gokalpPos >= finishLine) {
+      raceFinished = true;
+      status.textContent = 'Tebrikler! GÖKALP kazandı!';
+    } else if (cemilPos >= finishLine) {
+      raceFinished = true;
+      status.textContent = 'Tebrikler! CEMİL kazandı!';
     }
+  }
+
+  gokalpBtn.addEventListener('click', () => {
+    // Köpek fotoğrafı göster
+    const randomIndex = Math.floor(Math.random() * dogImages.length);
+    dogPhoto.src = dogImages[randomIndex];
+    dogPhoto.style.display = 'block';
+
+    // Yarış bölümünü gizle
+    raceSection.style.display = 'none';
+  });
+
+  cemilBtn.addEventListener('click', () => {
+    dogPhoto.style.display = 'none';
+    raceSection.style.display = 'block';
+    resetRace();
+  });
+
+  commands.addEventListener('click', e => {
+    if (!e.target.matches('button')) return;
+    if (raceFinished) return;
+
+    const action = e.target.getAttribute('data-action');
+
+    if (action === 'forward') {
+      gokalpPos += gokalpSpeed;
+      cemilPos += cemilSpeed;
+    } else if (action === 'speedup') {
+      gokalpSpeed += 2;
+      status.textContent = 'GÖKALP hızlandı!';
+    } else if (action === 'slowdown') {
+      gokalpSpeed = Math.max(2, gokalpSpeed - 2);
+      status.textContent = 'GÖKALP yavaşladı!';
+    }
+
+    updatePositions();
+    checkWinner();
   });
 </script>
 
