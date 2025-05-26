@@ -3,610 +3,587 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gökalp & Cemil Eğlenceli Oyunlar + AI</title>
+<title>Gökalp & Cemil Eğlence Sitesi</title>
 <style>
-  /* Reset */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
   * {
     box-sizing: border-box;
   }
-  body {
+  body, html {
     margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     overflow-x: hidden;
-    color: #222;
+    color: #fff;
+  }
+  body {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 40px 20px 120px;
-    position: relative;
+    min-height: 100vh;
   }
-
-  /* Animasyonlu arka plan dalga efekti */
-  @keyframes wave {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 200%;
-    height: 150%;
-    background: linear-gradient(270deg, #89f7fe, #66a6ff, #9cbbff, #4a69bd);
-    background-size: 2000% 2000%;
-    animation: wave 40s linear infinite;
-    filter: brightness(0.85);
-    z-index: -1;
-    transform: translate3d(0,0,0);
-  }
-
-  h1 {
-    font-weight: 900;
-    font-size: 3rem;
-    margin-bottom: 30px;
-    color: #fff;
-    text-shadow: 0 0 15px rgba(0,0,0,0.5);
-  }
-
-  /* Menü butonları */
-  #menu {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 50px;
-    max-width: 720px;
-  }
-  #menu button {
-    background: #1e90ff;
-    border: none;
-    padding: 15px 36px;
-    color: white;
-    font-size: 1.2rem;
+  header {
+    padding: 1rem 2rem;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    font-size: 2rem;
     font-weight: 700;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(30,144,255,0.6);
+    letter-spacing: 0.1em;
+    user-select: none;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    padding: 1rem 2rem;
+    gap: 2rem;
+    background: linear-gradient(135deg, #3a3a6d, #2c1c4e);
+    overflow: hidden;
+  }
+  nav#gameMenu {
+    width: 250px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  nav#gameMenu button {
+    background: #5f52a0;
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.7rem;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
   }
-  #menu button:hover {
-    background: #0f5dbf;
-    box-shadow: 0 8px 25px rgba(15,93,191,0.8);
+  nav#gameMenu button:hover {
+    background: #8362c7;
+    box-shadow: 0 6px 15px rgb(131 98 199 / 0.8);
     transform: translateY(-4px);
   }
-  #menu button:active {
-    transform: translateY(2px);
-    box-shadow: 0 3px 8px rgba(15,93,191,0.9);
+  nav#gameMenu button:active {
+    transform: scale(0.95);
   }
-  #menu button img {
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
+  nav#gameMenu button svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
   }
-
-  /* Oyun alanı */
-  #gameArea {
-    width: 100%;
-    max-width: 720px;
-    min-height: 360px;
-    background: rgba(255,255,255,0.95);
-    border-radius: 16px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.12);
-    padding: 28px 32px;
-    color: #222;
-    font-weight: 600;
+  section#gameArea {
+    flex: 1;
+    background: #201d38;
+    border-radius: 20px;
+    box-shadow: 0 10px 35px rgb(0 0 0 / 0.7);
+    padding: 2rem;
     overflow-y: auto;
+    position: relative;
+  }
+  section#gameArea h2 {
+    margin-top: 0;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  /* Scrollbar */
+  section#gameArea::-webkit-scrollbar {
+    width: 8px;
+  }
+  section#gameArea::-webkit-scrollbar-track {
+    background: #3a3755;
+    border-radius: 10px;
+  }
+  section#gameArea::-webkit-scrollbar-thumb {
+    background: #5f52a0;
+    border-radius: 10px;
   }
 
-  /* AI kutuları */
-  .aiBox {
+  /* AI Buttons */
+  #aiContainer {
     position: fixed;
-    bottom: 25px;
-    width: 220px;
-    background: #1e90ff;
-    border-radius: 50px;
-    box-shadow: 0 0 25px rgba(30,144,255,0.7);
-    padding: 12px 20px 18px;
-    color: white;
-    font-weight: 700;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+  }
+  .aiButton {
+    background: rgba(95, 82, 160, 0.9);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    box-shadow: 0 4px 12px rgba(95, 82, 160, 0.7);
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    user-select: none;
-    z-index: 1000;
-  }
-  #gokalpAI {
-    right: 25px;
-  }
-  #cemilAI {
-    right: 270px;
-  }
-  .aiBox img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-bottom: 12px;
-    border: 3px solid white;
-    object-fit: cover;
-  }
-  .aiTitle {
-    font-size: 1.4rem;
-    margin-bottom: 12px;
-    text-shadow: 0 0 6px rgba(0,0,0,0.3);
-  }
-  .aiChat {
-    background: rgba(255,255,255,0.95);
-    border-radius: 12px;
-    width: 100%;
-    max-height: 140px;
-    overflow-y: auto;
-    padding: 10px 12px;
-    color: #222;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-    margin-bottom: 12px;
-  }
-  .aiInputRow {
-    display: flex;
-    width: 100%;
-    gap: 10px;
-  }
-  .aiInputRow input[type="text"] {
-    flex-grow: 1;
-    border-radius: 25px;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    outline: none;
-    box-shadow: 0 0 6px rgba(30,144,255,0.5);
-  }
-  .aiInputRow button {
-    background: #0f5dbf;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
+    justify-content: center;
     color: white;
     font-weight: 700;
+    font-size: 0.8rem;
+    user-select: none;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .aiButton:hover {
+    background: #8362c7;
+    box-shadow: 0 6px 15px rgba(131, 98, 199, 0.8);
+    transform: translateY(-4px);
+  }
+  .aiButton img {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  /* Fullscreen AI Chat Modal */
+  #aiChatModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 35, 0.95);
+    backdrop-filter: blur(10px);
+    display: none;
+    flex-direction: column;
+    z-index: 2000;
+    padding: 1rem 2rem;
+  }
+  #aiChatModal.active {
+    display: flex;
+  }
+  #aiChatModal header {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #8362c7;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #aiChatModal header button.closeBtn {
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #8362c7;
     cursor: pointer;
+    font-weight: 900;
+    line-height: 1;
+    padding: 0 8px;
+    user-select: none;
+  }
+  #chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    background: #2a254a;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: inset 0 0 15px #503fa0;
+    margin-bottom: 1rem;
+  }
+  .message {
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+  .message.user {
+    text-align: right;
+    color: #c3c3ff;
+  }
+  .message.ai {
+    text-align: left;
+    color: #d9d9f5;
+  }
+  #aiInputArea {
+    display: flex;
+    gap: 1rem;
+  }
+  #aiInputArea input {
+    flex: 1;
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 1.2rem;
+    font-size: 1.2rem;
+    outline: none;
+    background: #3a3260;
+    color: #fff;
+    box-shadow: 0 0 10px #503fa0;
+    transition: box-shadow 0.3s ease;
+  }
+  #aiInputArea input:focus {
+    box-shadow: 0 0 15px #8362c7;
+  }
+  #aiInputArea button {
+    background: #8362c7;
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(131, 98, 199, 0.8);
     transition: background 0.3s ease;
   }
-  .aiInputRow button:hover {
-    background: #084a89;
-  }
-  .aiInputRow button:active {
-    background: #073863;
+  #aiInputArea button:hover {
+    background: #9c7ee4;
   }
 
-  /* Scrollbar stil (Webkit) */
-  .aiChat::-webkit-scrollbar {
-    width: 6px;
+  /* Game styles */
+
+  /* Common button style */
+  .game-btn {
+    background: #8362c7;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgb(131 98 199 / 0.7);
+    transition: all 0.3s ease;
   }
-  .aiChat::-webkit-scrollbar-thumb {
-    background: #1e90ff;
-    border-radius: 3px;
+  .game-btn:hover {
+    background: #a485d9;
+    box-shadow: 0 7px 20px rgb(164 133 217 / 0.9);
+    transform: translateY(-3px);
   }
-  .aiChat::-webkit-scrollbar-track {
+  .game-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Game specific styles */
+  #dogClicker button {
+    font-size: 3rem;
+    padding: 1rem 2rem;
     background: transparent;
+    box-shadow: none;
+  }
+  #dogClicker p {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  #clickRace button {
+    font-size: 2rem;
+  }
+  #reactionTest button {
+    font-size: 2rem;
+  }
+  #rpsGame button {
+    font-size: 2rem;
+    margin: 0.3rem;
+  }
+  #mathQuiz input, #wordGuess input {
+    padding: 0.8rem 1rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    margin-right: 1rem;
+  }
+  #mathQuiz button, #wordGuess button {
+    font-size: 1.2rem;
+  }
+  #snakeGame canvas {
+    background: #2c2150;
+    display: block;
+    margin: auto;
+    border-radius: 20px;
+  }
+  #memoryGame .card {
+    width: 70px;
+    height: 70px;
+    background: #8362c7;
+    border-radius: 12px;
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba(131,98,199,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s ease;
+  }
+  #memoryGame .card.flipped {
+    background: #a485d9;
+    cursor: default;
+    transform: rotateY(180deg);
+  }
+  #memoryGame .board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 360px;
+    margin: auto;
+  }
+  #typingGame input {
+    padding: 1rem;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+  }
+  #typingGame button {
+    font-size: 1.2rem;
+  }
+
+  /* Animations */
+  button, .aiButton {
+    transition: all 0.3s ease;
   }
 </style>
 </head>
 <body>
+<header>Gökalp & Cemil Eğlence Sitesi</header>
+<main>
+  <nav id="gameMenu" aria-label="Oyun Menüsü">
+    <button data-game="dogClicker" title="Köpek Tıklama Oyunu">🐶 Köpek Tıklama</button>
+    <button data-game="clickRace" title="Tıklama Yarışı">🚴‍♂️ Bisiklet Yarışı</button>
+    <button data-game="reactionTest" title="Refleks Testi">⚡ Refleks Testi</button>
+    <button data-game="rpsGame" title="Taş Kağıt Makas">✊✋✌️ Taş-Kağıt-Makas</button>
+    <button data-game="mathQuiz" title="Matematik Testi">➗ Matematik Testi</button>
+    <button data-game="wordGuess" title="Kelime Tahmini">🔤 Kelime Tahmini</button>
+    <button data-game="snakeGame" title="Yılan Oyunu">🐍 Yılan Oyunu</button>
+    <button data-game="memoryGame" title="Hafıza Oyunu">🧠 Hafıza Oyunu</button>
+    <button data-game="typingGame" title="Yazma Testi">⌨️ Yazma Testi</button>
+    <button data-game="colorMatch" title="Renk Eşleştirme">🎨 Renk Eşleştirme</button>
+  </nav>
+  <section id="gameArea" tabindex="0" aria-live="polite">
+    <h2>Oyun Seçiniz</h2>
+    <p>Sol taraftaki menüden bir oyun seçin ve oynayın.</p>
+  </section>
+</main>
 
-<h1>Gökalp & Cemil Eğlenceli Oyunlar + AI</h1>
-
-<div id="menu">
-  <!-- 10 oyun butonu, yanında ikonlar var -->
-  <button data-game="dogClicker">
-    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Köpek" />
-    Köpek Tıklama Oyunu
-  </button>
-  <button data-game="memoryGame">
-    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Hafıza" />
-    Hafıza Kartları
-  </button>
-  <button data-game="clickRace">
-    <img src="https://cdn-icons-png.flaticon.com/512/3421/3421896.png" alt="Yarış" />
-    Tıklama Yarışı
-  </button>
-  <button data-game="bikeRace">
-    <img src="https://cdn-icons-png.flaticon.com/512/888/888015.png" alt="Bisiklet" />
-    Bisiklet Yarışı
-  </button>
-  <button data-game="wordGuess">
-    <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Kelime" />
-    Kelime Tahmin
-  </button>
-  <button data-game="reactionTest">
-    <img src="https://cdn-icons-png.flaticon.com/512/2163/2163678.png" alt="Refleks" />
-    Refleks Testi
-  </button>
-  <button data-game="rockPaperScissors">
-    <img src="https://cdn-icons-png.flaticon.com/512/1069/1069189.png" alt="Taş Kağıt Makas" />
-    Taş Kağıt Makas
-  </button>
-  <button data-game="mathQuiz">
-    <img src="https://cdn-icons-png.flaticon.com/512/3099/3099251.png" alt="Matematik" />
-    Matematik Quiz
-  </button>
-  <button data-game="colorMatch">
-    <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="Renk" />
-    Renk Eşleştirme
-  </button>
-  <button data-game="countdownTimer">
-    <img src="https://cdn-icons-png.flaticon.com/512/2921/2921825.png" alt="Sayaç" />
-    Geri Sayım Sayacı
-  </button>
-</div>
-
-<div id="gameArea">
-  <p>Bir oyun seçmek için yukarıdaki butonlardan birine tıkla!</p>
-</div>
-
-<!-- Gökalp AI Kutusu -->
-<div class="aiBox" id="gokalpAI" role="region" aria-label="Gökalp yapay zeka sohbet kutusu">
-  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Gökalp AI Köpek İkonu" />
-  <div class="aiTitle">Gökalp AI</div>
-  <div class="aiChat" id="gokalpChat" aria-live="polite"></div>
-  <div class="aiInputRow">
-    <input type="text" id="gokalpInput" placeholder="Bir şey sor..." aria-label="Gökalp AI soru girişi" />
-    <button id="gokalpSend" aria-label="Gökalp AI mesaj gönder">Gönder</button>
+<!-- AI Butonları -->
+<div id="aiContainer" aria-label="Yapay Zeka Sohbetleri">
+  <div class="aiButton" id="gokalpAI" role="button" tabindex="0" aria-pressed="false" aria-label="Gökalp AI">
+    <img src="https://placedog.net/64/64?id=1" alt="Gökalp AI Köpek" />
+    Gökalp AI
+  </div>
+  <div class="aiButton" id="cemilAI" role="button" tabindex="0" aria-pressed="false" aria-label="Cemil AI">
+    <img src="https://placedog.net/64/64?id=2" alt="Cemil AI Bisiklet" />
+    Cemil AI
   </div>
 </div>
 
-<!-- Cemil AI Kutusu -->
-<div class="aiBox" id="cemilAI" role="region" aria-label="Cemil yapay zeka sohbet kutusu">
-  <img src="https://cdn-icons-png.flaticon.com/512/888/888015.png" alt="Cemil AI Bisiklet İkonu" />
-  <div class="aiTitle">Cemil AI</div>
-  <div class="aiChat" id="cemilChat" aria-live="polite"></div>
-  <div class="aiInputRow">
-    <input type="text" id="cemilInput" placeholder="Bir şey sor..." aria-label="Cemil AI soru girişi" />
-    <button id="cemilSend" aria-label="Cemil AI mesaj gönder">Gönder</button>
-  </div>
+<!-- AI Chat Modal -->
+<div id="aiChatModal" role="dialog" aria-modal="true" aria-labelledby="aiChatTitle" aria-describedby="aiChatDesc">
+  <header>
+    <span id="aiChatTitle">AI Sohbet</span>
+    <button class="closeBtn" aria-label="Sohbeti Kapat">&times;</button>
+  </header>
+  <div id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <form id="aiInputArea" aria-label="Mesaj Gönderme Formu">
+    <input type="text" id="aiInput" autocomplete="off" placeholder="Mesajınızı yazın..." aria-describedby="aiChatDesc" required />
+    <button type="submit">Gönder</button>
+  </form>
 </div>
 
 <script>
-  // Oyunlar için basit içerikler
-  const games = {
-    dogClicker: `
-      <h2>Köpek Tıklama Oyunu</h2>
-      <p>Köpeğe tıkla, puan kazan!</p>
-      <button id="dogClickBtn" style="font-size:1.5rem;padding:20px;">🐶 Tıkla!</button>
-      <p>Puan: <span id="dogScore">0</span></p>
-    `,
-    memoryGame: `
-      <h2>Hafıza Kartları</h2>
-      <p>Bir kart seç ve eşini bul!</p>
-      <p><i>Örnek oyun henüz yapılıyor...</i></p>
-    `,
-    clickRace: `
-      <h2>Tıklama Yarışı</h2>
-      <p>10 saniyede kaç kere tıklayabilirsin?</p>
-      <button id="clickRaceBtn" style="font-size:1.5rem;padding:20px;">Tıkla!</button>
-      <p>Zaman: <span id="clickRaceTime">10</span> sn</p>
-      <p>Puan: <span id="clickRaceScore">0</span></p>
-    `,
-    bikeRace: `
-      <h2>Bisiklet Yarışı</h2>
-      <p>Boş bir oyun alanı. Oyunu geliştireceğiz.</p>
-    `,
-    wordGuess: `
-      <h2>Kelime Tahmin</h2>
-      <p>Bir kelime tahmin et.</p>
-      <input id="wordGuessInput" type="text" placeholder="Kelimeyi yaz" />
-      <button id="wordGuessBtn">Tahmin Et</button>
-      <p id="wordGuessResult"></p>
-    `,
-    reactionTest: `
-      <h2>Refleks Testi</h2>
-      <p>Renk değişince hemen tıkla!</p>
-      <button id="reactionBtn" disabled style="font-size:1.5rem;padding:20px;">Bekle...</button>
-      <p>Süre: <span id="reactionTime">0</span> ms</p>
-    `,
-    rockPaperScissors: `
-      <h2>Taş Kağıt Makas</h2>
-      <p>Birini seç ve kazan!</p>
-      <button data-choice="taş" class="rpsBtn">🪨 Taş</button>
-      <button data-choice="kağıt" class="rpsBtn">📄 Kağıt</button>
-      <button data-choice="makas" class="rpsBtn">✂️ Makas</button>
-      <p id="rpsResult"></p>
-    `,
-    mathQuiz: `
-      <h2>Matematik Quiz</h2>
-      <p>Basit toplama sorusu:</p>
-      <p id="mathQuestion"></p>
-      <input id="mathAnswer" type="number" placeholder="Cevap" />
-      <button id="mathSubmit">Kontrol Et</button>
-      <p id="mathResult"></p>
-    `,
-    colorMatch: `
-      <h2>Renk Eşleştirme</h2>
-      <p>Renk kodunu eşleştir.</p>
-      <p><i>Geliştiriliyor...</i></p>
-    `,
-    countdownTimer: `
-      <h2>Geri Sayım Sayacı</h2>
-      <input id="countdownInput" type="number" placeholder="Saniye gir" min="1" />
-      <button id="countdownStart">Başlat</button>
-      <p>Kalan süre: <span id="countdownDisplay">0</span> sn</p>
-    `,
-  };
-
-  // Game logic globals
-  let dogScore = 0;
-  let clickRaceScore = 0;
-  let clickRaceInterval;
-  let clickRaceTime = 10;
-  let reactionTimeout, reactionStart;
-  let mathCorrectAnswer;
-
-  // Ana oyun alanı elemanı
+  // Oyun verileri ve kodları burada olacak
   const gameArea = document.getElementById('gameArea');
+  const gameButtons = document.querySelectorAll('#gameMenu button');
 
-  // Menü butonlarına event ekleme
-  document.querySelectorAll('#menu button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const gameKey = btn.getAttribute('data-game');
-      loadGame(gameKey);
-    });
-  });
-
-  // Oyun yükleyici fonksiyonu
-  function loadGame(gameKey) {
-    clearInterval(clickRaceInterval);
-    clearTimeout(reactionTimeout);
-    gameArea.innerHTML = games[gameKey] || '<p>Oyun bulunamadı.</p>';
-    setupGame(gameKey);
-  }
-
-  // Oyun başlangıç setup fonksiyonu
-  function setupGame(gameKey) {
-    switch (gameKey) {
-      case 'dogClicker':
-        dogScore = 0;
-        document.getElementById('dogScore').textContent = dogScore;
-        document.getElementById('dogClickBtn').onclick = () => {
-          dogScore++;
-          document.getElementById('dogScore').textContent = dogScore;
-        };
-        break;
-
-      case 'clickRace':
-        clickRaceScore = 0;
-        clickRaceTime = 10;
-        document.getElementById('clickRaceScore').textContent = clickRaceScore;
-        document.getElementById('clickRaceTime').textContent = clickRaceTime;
-        const clickRaceBtn = document.getElementById('clickRaceBtn');
-        clickRaceBtn.disabled = false;
-        clickRaceBtn.onclick = () => {
-          clickRaceScore++;
-          document.getElementById('clickRaceScore').textContent = clickRaceScore;
-        };
-        clickRaceInterval = setInterval(() => {
-          clickRaceTime--;
-          document.getElementById('clickRaceTime').textContent = clickRaceTime;
-          if (clickRaceTime <= 0) {
-            clearInterval(clickRaceInterval);
-            clickRaceBtn.disabled = true;
-            alert(`Süre doldu! Tıklama sayın: ${clickRaceScore}`);
-          }
-        }, 1000);
-        break;
-
-      case 'wordGuess':
-        const secretWords = ['gökalp', 'cemil', 'javascript', 'oyun', 'bilgisayar'];
-        let secretWord = secretWords[Math.floor(Math.random() * secretWords.length)];
-        const wordInput = document.getElementById('wordGuessInput');
-        const wordBtn = document.getElementById('wordGuessBtn');
-        const wordResult = document.getElementById('wordGuessResult');
-        wordInput.value = '';
-        wordResult.textContent = '';
-        wordBtn.onclick = () => {
-          let guess = wordInput.value.trim().toLowerCase();
-          if (!guess) return alert('Bir kelime girin!');
-          if (guess === secretWord) {
-            wordResult.textContent = 'Tebrikler, doğru tahmin!';
-            secretWord = secretWords[Math.floor(Math.random() * secretWords.length)];
-          } else {
-            wordResult.textContent = 'Yanlış, tekrar deneyin.';
-          }
-          wordInput.value = '';
-          wordInput.focus();
-        };
-        break;
-
-      case 'reactionTest':
-        const reactionBtn = document.getElementById('reactionBtn');
-        const reactionTimeDisplay = document.getElementById('reactionTime');
-        reactionBtn.textContent = 'Bekle...';
-        reactionBtn.disabled = true;
-        reactionTimeDisplay.textContent = '0';
-
-        // Rastgele süre sonra butonu aktif et
-        reactionTimeout = setTimeout(() => {
-          reactionBtn.textContent = 'Şimdi Tıkla!';
-          reactionBtn.disabled = false;
-          reactionStart = Date.now();
-        }, Math.random() * 3000 + 2000);
-
-        reactionBtn.onclick = () => {
-          if (reactionBtn.disabled) return;
-          const reactionTime = Date.now() - reactionStart;
-          reactionTimeDisplay.textContent = reactionTime;
-          reactionBtn.textContent = 'Tekrar Deneyin';
-          reactionBtn.disabled = true;
-          clearTimeout(reactionTimeout);
-          setTimeout(() => setupGame('reactionTest'), 2000);
-        };
-        break;
-
-      case 'rockPaperScissors':
-        const rpsButtons = document.querySelectorAll('.rpsBtn');
-        const rpsResult = document.getElementById('rpsResult');
-
-        function rpsComputerChoice() {
-          const choices = ['taş', 'kağıt', 'makas'];
-          return choices[Math.floor(Math.random() * choices.length)];
+  // Oyun içerikleri fonksiyonları (Örnek oyunlar, eğlenceli ve biraz gelişmiş)
+  const games = {
+    dogClicker: function() {
+      gameArea.innerHTML = `
+        <h2>🐶 Köpek Tıklama Oyunu</h2>
+        <button id="dogClickBtn" aria-label="Köpek Tıkla">🐕‍🦺</button>
+        <p>Toplam tıklama: <span id="dogClicks">0</span></p>
+      `;
+      let count = 0;
+      const btn = document.getElementById('dogClickBtn');
+      const display = document.getElementById('dogClicks');
+      btn.addEventListener('click', () => {
+        count++;
+        display.textContent = count;
+        if (count % 10 === 0) {
+          alert(`Bravo! ${count} kere tıkladınız!`);
         }
-        function rpsDecide(user, comp) {
-          if (user === comp) return "Berabere!";
-          if (
-            (user === 'taş' && comp === 'makas') ||
-            (user === 'kağıt' && comp === 'taş') ||
-            (user === 'makas' && comp === 'kağıt')
-          ) return "Kazandınız!";
-          return "Kaybettiniz!";
-        }
+      });
+    },
+    clickRace: function() {
+      gameArea.innerHTML = `
+        <h2>🚴‍♂️ Bisiklet Yarışı</h2>
+        <p>Gökalp ve Cemil bisiklet yarışında!</p>
+        <div style="display:flex;gap:1rem; align-items:center;">
+          <div style="flex:1; background:#553d9a; border-radius:12px; height:20px; position:relative;">
+            <div id="gokalpBike" style="background:#a485d9; height:20px; width:0%; border-radius:12px; transition: width 0.2s;"></div>
+          </div>
+          <div style="flex:1; background:#553d9a; border-radius:12px; height:20px; position:relative;">
+            <div id="cemilBike" style="background:#8362c7; height:20px; width:0%; border-radius:12px; transition: width 0.2s;"></div>
+          </div>
+        </div>
+        <p>Tıklayın ve yarışı kazanın! İlk %100 olan kazanır.</p>
+        <button id="gokalpBtn" class="game-btn" aria-label="Gökalp için Tıkla">Gökalp Tıkla</button>
+        <button id="cemilBtn" class="game-btn" aria-label="Cemil için Tıkla">Cemil Tıkla</button>
+        <p id="raceResult" style="font-weight:700; font-size:1.2rem; margin-top:1rem;"></p>
+      `;
+      const gokalpBike = document.getElementById('gokalpBike');
+      const cemilBike = document.getElementById('cemilBike');
+      const gokalpBtn = document.getElementById('gokalpBtn');
+      const cemilBtn = document.getElementById('cemilBtn');
+      const raceResult = document.getElementById('raceResult');
 
-        rpsResult.textContent = '';
-        rpsButtons.forEach(b => {
-          b.onclick = () => {
-            const userChoice = b.getAttribute('data-choice');
-            const compChoice = rpsComputerChoice();
-            const resultText = rpsDecide(userChoice, compChoice);
-            rpsResult.textContent = `Bilgisayar: ${compChoice} - Sen: ${userChoice} → ${resultText}`;
-          };
+      let gokalpProgress = 0;
+      let cemilProgress = 0;
+      let raceFinished = false;
+
+      function checkWinner() {
+        if (gokalpProgress >= 100 && !raceFinished) {
+          raceResult.textContent = "🎉 Gökalp Kazandı! Tebrikler!";
+          raceFinished = true;
+        } else if (cemilProgress >= 100 && !raceFinished) {
+          raceResult.textContent = "🎉 Cemil Kazandı! Tebrikler!";
+          raceFinished = true;
+        }
+      }
+      gokalpBtn.addEventListener('click', () => {
+        if (raceFinished) return;
+        gokalpProgress += Math.floor(Math.random() * 5) + 5;
+        if (gokalpProgress > 100) gokalpProgress = 100;
+        gokalpBike.style.width = gokalpProgress + '%';
+        checkWinner();
+      });
+      cemilBtn.addEventListener('click', () => {
+        if (raceFinished) return;
+        cemilProgress += Math.floor(Math.random() * 5) + 5;
+        if (cemilProgress > 100) cemilProgress = 100;
+        cemilBike.style.width = cemilProgress + '%';
+        checkWinner();
+      });
+    },
+    reactionTest: function() {
+      gameArea.innerHTML = `
+        <h2>⚡ Refleks Testi</h2>
+        <p>Butona sadece yeşil yandığında tıklayın!</p>
+        <button id="reactionBtn" class="game-btn" disabled>Tıklayın</button>
+        <p id="reactionResult"></p>
+      `;
+      const btn = document.getElementById('reactionBtn');
+      const result = document.getElementById('reactionResult');
+      let startTime, timeoutId;
+
+      function startTest() {
+        btn.disabled = true;
+        btn.style.background = '#8362c7';
+        result.textContent = 'Bekleniyor...';
+        const delay = Math.random() * 4000 + 2000;
+        timeoutId = setTimeout(() => {
+          btn.disabled = false;
+          btn.style.background = '#2ecc71';
+          btn.textContent = 'Şimdi Tıkla!';
+          startTime = performance.now();
+        }, delay);
+      }
+      btn.addEventListener('click', () => {
+        if (btn.disabled) {
+          clearTimeout(timeoutId);
+          result.textContent = 'Çok erken tıkladınız! Tekrar deneyin.';
+          startTest();
+          return;
+        }
+        const reactionTime = performance.now() - startTime;
+        result.textContent = `Tepki süreniz: ${reactionTime.toFixed(2)} ms`;
+        btn.textContent = 'Tekrar Başlat';
+        startTest();
+      });
+      startTest();
+    },
+    rpsGame: function() {
+      gameArea.innerHTML = `
+        <h2>✊✋✌️ Taş-Kağıt-Makas</h2>
+        <p>Bilgisayara karşı oynayın!</p>
+        <div>
+          <button class="game-btn" data-choice="rock" aria-label="Taş">✊</button>
+          <button class="game-btn" data-choice="paper" aria-label="Kağıt">✋</button>
+          <button class="game-btn" data-choice="scissors" aria-label="Makas">✌️</button>
+        </div>
+        <p id="rpsResult" style="margin-top:1rem; font-weight:700;"></p>
+      `;
+      const buttons = gameArea.querySelectorAll('button[data-choice]');
+      const result = document.getElementById('rpsResult');
+      const choices = ['rock', 'paper', 'scissors'];
+
+      function decideWinner(user, comp) {
+        if (user === comp) return "Berabere!";
+        if ((user === 'rock' && comp === 'scissors') ||
+            (user === 'paper' && comp === 'rock') ||
+            (user === 'scissors' && comp === 'paper')) {
+          return "Kazandınız!";
+        }
+        return "Kaybettiniz!";
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const userChoice = btn.getAttribute('data-choice');
+          const compChoice = choices[Math.floor(Math.random() * choices.length)];
+          const winner = decideWinner(userChoice, compChoice);
+          result.textContent = `Siz: ${userChoice} - Bilgisayar: ${compChoice} | ${winner}`;
         });
-        break;
+      });
+    },
+    mathQuiz: function() {
+      gameArea.innerHTML = `
+        <h2>➗ Matematik Testi</h2>
+        <p>Basit işlemleri çözün!</p>
+        <div id="mathQuestion"></div>
+        <input type="number" id="mathAnswer" placeholder="Cevabınız" aria-label="Matematik cevabı" />
+        <button class="game-btn" id="submitMath">Kontrol Et</button>
+        <p id="mathResult" style="margin-top:1rem; font-weight:700;"></p>
+      `;
+      const questionDiv = document.getElementById('mathQuestion');
+      const answerInput = document.getElementById('mathAnswer');
+      const submitBtn = document.getElementById('submitMath');
+      const result = document.getElementById('mathResult');
 
-      case 'mathQuiz':
-        const mathQ = document.getElementById('mathQuestion');
-        const mathA = document.getElementById('mathAnswer');
-        const mathR = document.getElementById('mathResult');
-        const mathSubmit = document.getElementById('mathSubmit');
+      let num1, num2, op, correctAnswer;
 
-        // Basit toplama sorusu üret
-        const a = Math.floor(Math.random() * 50) + 1;
-        const b = Math.floor(Math.random() * 50) + 1;
-        mathCorrectAnswer = a + b;
-        mathQ.textContent = `${a} + ${b} = ?`;
-        mathA.value = '';
-        mathR.textContent = '';
-
-        mathSubmit.onclick = () => {
-          const userAnswer = Number(mathA.value);
-          if (userAnswer === mathCorrectAnswer) {
-            mathR.textContent = 'Doğru cevap! Tebrikler.';
-          } else {
-            mathR.textContent = `Yanlış cevap. Doğru cevap: ${mathCorrectAnswer}`;
-          }
-        };
-        break;
-
-      case 'countdownTimer':
-        const countdownInput = document.getElementById('countdownInput');
-        const countdownStart = document.getElementById('countdownStart');
-        const countdownDisplay = document.getElementById('countdownDisplay');
-        let countdownTimerId;
-
-        countdownDisplay.textContent = '0';
-
-        countdownStart.onclick = () => {
-          clearInterval(countdownTimerId);
-          let timeLeft = parseInt(countdownInput.value, 10);
-          if (isNaN(timeLeft) || timeLeft <= 0) {
-            alert('Lütfen geçerli bir sayı girin!');
-            return;
-          }
-          countdownDisplay.textContent = timeLeft;
-          countdownTimerId = setInterval(() => {
-            timeLeft--;
-            countdownDisplay.textContent = timeLeft;
-            if (timeLeft <= 0) {
-              clearInterval(countdownTimerId);
-              alert('Süre doldu!');
-            }
-          }, 1000);
-        };
-        break;
-
-      default:
-        // Diğer oyunlar ve geliştirilmekte olanlar
-        break;
-    }
-  }
-
-  // AI Sohbet kısmı: Basit önceden tanımlı cevaplar
-  function setupAI(aiId) {
-    const chatBox = document.getElementById(aiId + 'Chat');
-    const inputBox = document.getElementById(aiId + 'Input');
-    const sendBtn = document.getElementById(aiId + 'Send');
-
-    sendBtn.onclick = () => {
-      const userMsg = inputBox.value.trim();
-      if (!userMsg) return;
-      appendMessage(chatBox, 'Sen', userMsg);
-      inputBox.value = '';
-      inputBox.disabled = true;
-      sendBtn.disabled = true;
-
-      // Yapay zekanın yanıtı
-      setTimeout(() => {
-        const reply = generateAIReply(aiId, userMsg);
-        appendMessage(chatBox, aiId === 'gokalp' ? 'Gökalp AI' : 'Cemil AI', reply);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        inputBox.disabled = false;
-        sendBtn.disabled = false;
-        inputBox.focus();
-      }, 1200 + Math.random() * 1000);
-    };
-
-    // Enter ile gönderme
-    inputBox.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
-    });
-  }
-
-  // Basit cevap mekanizması
-  function generateAIReply(aiId, msg) {
-    const lowerMsg = msg.toLowerCase();
-    if (aiId === 'gokalp') {
-      if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) {
-        return 'Merhaba! Sana nasıl yardımcı olabilirim? 🐶';
+      function generateQuestion() {
+        num1 = Math.floor(Math.random() * 20) + 1;
+        num2 = Math.floor(Math.random() * 20) + 1;
+        const ops = ['+', '-', '*'];
+        op = ops[Math.floor(Math.random() * ops.length)];
+        switch(op) {
+          case '+': correctAnswer = num1 + num2; break;
+          case '-': correctAnswer = num1 - num2; break;
+          case '*': correctAnswer = num1 * num2; break;
+        }
+        questionDiv.textContent = `${num1} ${op} ${num2} = ?`;
+        answerInput.value = '';
+        result.textContent = '';
       }
-      if (lowerMsg.includes('oyun')) {
-        return 'Oyunlar harika, hangisini oynamak istersin?';
-      }
-      if (lowerMsg.includes('nasılsın')) {
-        return 'Harika hissediyorum! Sen nasılsın?';
-      }
-      return 'Anlayamadım, biraz daha açık olabilir misin?';
-    } else {
-      // cemil AI
-      if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) {
-        return 'Selam! Bisiklet sürmek gibisi yok, ne düşünüyorsun? 🚴';
-      }
-      if (lowerMsg.includes('yardım')) {
-        return 'Buradayım, neye ihtiyacın var?';
-      }
-      if (lowerMsg.includes('gökalp')) {
-        return 'Gökalp çok zeki biri! Onun oyunlarını seviyorum.';
-      }
-      return 'Bunu anlamadım, başka bir şey sorar mısın?';
-    }
-  }
-
-  function appendMessage(chatBox, sender, text) {
-    const p = document.createElement('p');
-    p.style.margin = '6px 0';
-    p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    chatBox.appendChild(p);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // AI kutularını başlat
-  setupAI('gokalp');
-  setupAI('cemil');
-</script>
-
-</body>
-</html>
+      submitBtn.addEventListener('click', () => {
+        const userAns = Number(answerInput.value);
+        if (userAns === correctAnswer) {
+          result.textContent = 'Tebrikler! Doğru cevap.';
+        } else {
+          result.textContent = `Yanlış! Doğru cevap: ${correctAnswer}`;
+        }
+        generateQuestion();
+      });
+      generateQuestion();
+    },
+    wordGuess: function() {
+      gameArea.innerHTML = `
+        <h2>🔤 Kelime Tahmini</h2>
+        <p>İpucu: Bir hayvan ismi</p>
+        <input type="text" id="wordGuessInput" placeholder="Tahmininizi yazın" aria-label="Kelime tahmini" />
+        <button class="game-btn" id="guessBtn">Tahmin Et</button>
+        <p id="guessResult" style="margin-top:1rem; font-weight:700;"></p>
+      `;
+      const words = ['köpek', 'kedi', 'at', 'fil', 'kaplumbağa', '
