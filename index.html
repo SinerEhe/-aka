@@ -14,17 +14,42 @@
   #warning {
     font-size: 2em;
     animation: blink 1s infinite;
+    margin-bottom: 30px;
   }
   @keyframes blink {
     0%, 50%, 100% {opacity: 1;}
     25%, 75% {opacity: 0;}
   }
+  button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: red;
+    border: none;
+    color: white;
+    border-radius: 5px;
+  }
+  button:hover {
+    background: darkred;
+  }
 </style>
 </head>
-<body>
+<body onload="alert('UYARI: Bilgisayarınız virüslendi! Tam ekran için butona tıklayın!')">
   <div id="warning">Bilgisayarınız Virüslendi! Hemen Kapatmayın!</div>
+  <button onclick="openFullscreen()">Tam Ekran Moduna Geç</button>
+
   <script>
-    alert("UYARI: Bilgisayarınız virüslendi!");
+    var elem = document.documentElement;
+
+    function openFullscreen() {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    }
   </script>
 </body>
 </html>
