@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Şaka Sitesi</title>
+<style>
+  body {
+    background: black;
+    color: red;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    padding-top: 50px;
+  }
+  #warning {
+    font-size: 2em;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50%, 100% {opacity: 1;}
+    25%, 75% {opacity: 0;}
+  }
+</style>
+</head>
+<body>
+  <div id="warning">Bilgisayarınız Virüslendi! Hemen Kapatmayın!</div>
+  <script>
+    alert("UYARI: Bilgisayarınız virüslendi!");
+  </script>
+</body>
+</html>
