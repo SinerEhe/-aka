@@ -2,120 +2,214 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<title>18+ Site Girişi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GÖKALP & CEMİL</title>
 <style>
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    background: black;
-    color: #ff3366;
-    font-family: 'Arial Black', Arial, sans-serif;
-    overflow: hidden; /* Kaydırma yok */
-    user-select: none; /* Yazı seçilemez */
-    -webkit-user-select: none;
-    -moz-user-select: none;
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  #warningBox {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: #111;
-    border: 4px solid #ff3366;
-    padding: 40px;
-    border-radius: 15px;
-    max-width: 400px;
+
+  header {
+    padding: 40px 20px;
     text-align: center;
-    box-shadow: 0 0 30px #ff3366;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: #f5f5f5;
+    user-select: none;
+    text-shadow: 0 0 20px #e0e0e0;
   }
-  h1 {
-    font-size: 3em;
-    margin-bottom: 10px;
-    text-shadow: 0 0 10px #ff3366;
+
+  main {
+    width: 90%;
+    max-width: 900px;
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 25px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    padding: 30px;
+    margin-bottom: 50px;
   }
-  p {
-    font-size: 1.3em;
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
     margin-bottom: 30px;
   }
+
   button {
-    background: #ff3366;
+    background: #6a7bd8;
     border: none;
+    border-radius: 50px;
+    padding: 20px 45px;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: white;
-    padding: 15px 40px;
-    font-size: 1.5em;
-    border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 0 15px #ff3366;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 20px #6a7bd8;
+    user-select: none;
   }
+
   button:hover {
-    background: #cc2950;
+    background: #4f5ecb;
+    transform: scale(1.05);
+    box-shadow: 0 0 35px #4f5ecb;
+  }
+
+  #chatBox, #cemilOutput {
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  #chatInput {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: none;
+    margin-top: 15px;
+    font-size: 1rem;
+  }
+
+  #chatInput:focus {
+    outline: none;
+    box-shadow: 0 0 10px #6a7bd8;
+  }
+
+  .message {
+    margin: 10px 0;
+  }
+
+  .message.user {
+    text-align: right;
+    color: #a8d0ff;
+  }
+
+  .message.bot {
+    text-align: left;
+    color: #ffd36e;
+  }
+
+  /* Scrollbar */
+  #chatBox::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #chatBox::-webkit-scrollbar-thumb {
+    background: #6a7bd8;
+    border-radius: 4px;
   }
 </style>
 </head>
 <body>
 
-<div id="warningBox">
-  <h1>18+ Site Girişi</h1>
-  <p>Yaşınızı doğrulamak için aşağıdaki butona tıklayın.</p>
-  <button id="enterBtn">18 Yaşındayım, Devam Et</button>
-</div>
+<header>GÖKALP &amp; CEMİL</header>
+
+<main>
+  <div class="buttons">
+    <button id="gokalpBtn">GÖKALP</button>
+    <button id="cemilBtn">CEMİL</button>
+  </div>
+
+  <div id="chatSection" style="display:none;">
+    <div id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Mesajını yaz, enter'a bas..." autocomplete="off" />
+  </div>
+
+  <div id="cemilOutput" style="display:none; font-weight:700; font-size:1.4rem; text-align:center; padding: 50px 20px;"></div>
+</main>
 
 <script>
-  // Tam ekran moduna geç ve tuşları engelle
-  const elem = document.documentElement;
+  const gokalpBtn = document.getElementById('gokalpBtn');
+  const cemilBtn = document.getElementById('cemilBtn');
+  const chatSection = document.getElementById('chatSection');
+  const chatBox = document.getElementById('chatBox');
+  const chatInput = document.getElementById('chatInput');
+  const cemilOutput = document.getElementById('cemilOutput');
 
-  function openFullscreen() {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { 
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { 
-      elem.msRequestFullscreen();
+  // Köpeklerle ilgili basit AI tarzı cevaplar (çok basit örnek)
+  const dogReplies = [
+    "Köpekler gerçekten sadık dostlardır, sen ne düşünüyorsun?",
+    "En sevdiğin köpek türü hangisi?",
+    "Köpeklerle vakit geçirmek insanın ruhunu iyileştirir.",
+    "Sence köpekler duyguları anlayabilir mi?",
+    "Köpek beslemek hayatı nasıl etkiler sence?"
+  ];
+
+  // Cemil butonuna basınca rastgele kelimeler
+  const cemilWords = [
+    "Ömür", "Bacak", "Kılıç", "Yıldız", "Rüzgar", "Deniz", "Dağ", "Kılıç", "Ateş", "Güneş"
+  ];
+
+  // GÖKALP butonuna basınca chat aç
+  gokalpBtn.onclick = () => {
+    cemilOutput.style.display = 'none';
+    chatSection.style.display = 'block';
+    chatBox.innerHTML = '';
+    chatInput.value = '';
+    chatInput.focus();
+
+    // Bot ilk mesajı atsın
+    addBotMessage("Merhaba! Köpekler hakkında sohbet edelim, ne düşünüyorsun?");
+  };
+
+  // CEMİL butonuna basınca rastgele mesaj oluştur
+  cemilBtn.onclick = () => {
+    chatSection.style.display = 'none';
+    cemilOutput.style.display = 'block';
+
+    // Rastgele 3 kelimeden oluşan cümle
+    const getRandomWord = () => cemilWords[Math.floor(Math.random() * cemilWords.length)];
+    const message = `${getRandomWord()} ile ${getRandomWord()} ve ${getRandomWord()} sihirli bir macera!`;
+    cemilOutput.textContent = message;
+  };
+
+  // Mesaj ekleme fonksiyonları
+  function addUserMessage(msg) {
+    const div = document.createElement('div');
+    div.className = 'message user';
+    div.textContent = msg;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function addBotMessage(msg) {
+    const div = document.createElement('div');
+    div.className = 'message bot';
+    div.textContent = msg;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // Chat input enter ile cevap al
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+      const userMsg = chatInput.value.trim();
+      addUserMessage(userMsg);
+      chatInput.value = '';
+
+      // Basit AI: köpek sohbeti, random cevap
+      setTimeout(() => {
+        const reply = dogReplies[Math.floor(Math.random() * dogReplies.length)];
+        addBotMessage(reply);
+      }, 700);
     }
-  }
-
-  document.getElementById('enterBtn').addEventListener('click', () => {
-    openFullscreen();
-    startLockdown();
   });
-
-  function startLockdown() {
-    // Uyarı ver
-    alert("UYARI! Sayfa skilitlendi. Çıkmak için tarayıcıyı kapatmanız gerekiyor.");
-
-    // Sağ tık engelle
-    document.addEventListener('contextmenu', e => e.preventDefault());
-
-    // Yazı seçmeyi engelle
-    document.addEventListener('selectstart', e => e.preventDefault());
-
-    // Kopyalamayı engelle
-    document.addEventListener('copy', e => e.preventDefault());
-
-    // Klavye kısayollarını engelle
-    document.addEventListener('keydown', function(e) {
-      // Tüm F tuşları, ESC, Ctrl+W, Ctrl+R, Ctrl+Shift+I vb engelle
-      if (
-        e.key.startsWith('F') || // F1-F12
-        e.key === 'Escape' ||
-        (e.ctrlKey && (e.key === 'w' || e.key === 'r' || e.key === 'W' || e.key === 'R')) ||
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
-        (e.ctrlKey && e.key === 'u') // kaynak kodu engelle
-      ) {
-        e.preventDefault();
-        alert("Bu işlem engellendi!");
-      }
-    });
-
-    // Sayfayı sürekli üstte tut (örneğin popup açık tutmak için)
-    window.focus();
-
-    // Geri tuşu engellemek için
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-      history.go(1);
-    };
-
-    // Basit gizli geri sayım veya animasyon eklenebilir burada
-  }
 </script>
 
 </body>
