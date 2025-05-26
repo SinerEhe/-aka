@@ -2,91 +2,119 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<title>Korkunç Şaka Sitesi</title>
+<title>18+ Site Girişi</title>
 <style>
-  body {
+  html, body {
+    margin: 0; padding: 0; height: 100%;
     background: black;
-    color: red;
-    font-family: 'Courier New', monospace;
+    color: #ff3366;
+    font-family: 'Arial Black', Arial, sans-serif;
+    overflow: hidden; /* Kaydırma yok */
+    user-select: none; /* Yazı seçilemez */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+  }
+  #warningBox {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    border: 4px solid #ff3366;
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 400px;
     text-align: center;
-    padding-top: 50px;
+    box-shadow: 0 0 30px #ff3366;
   }
-  #countdown {
-    font-size: 5em;
-    margin-bottom: 20px;
-  }
-  #warning {
+  h1 {
     font-size: 3em;
-    font-weight: bold;
-    display: none;
-    margin-bottom: 20px;
-    animation: blink 1s infinite;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #ff3366;
   }
-  @keyframes blink {
-    0%, 50%, 100% {opacity: 1;}
-    25%, 75% {opacity: 0;}
-  }
-  #scaryImage {
-    max-width: 80vw;
-    max-height: 80vh;
-    display: none;
-    margin: 0 auto;
-    border: 5px solid red;
-    border-radius: 10px;
+  p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
   }
   button {
-    font-size: 1.2em;
-    padding: 10px 20px;
-    cursor: pointer;
-    background: red;
+    background: #ff3366;
     border: none;
     color: white;
-    border-radius: 5px;
-    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 1.5em;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff3366;
   }
   button:hover {
-    background: darkred;
+    background: #cc2950;
   }
 </style>
 </head>
 <body>
 
-<div id="countdown">10</div>
-<div id="warning">VİRÜS BULUNDU!</div>
-<img id="scaryImage" src="https://i.imgur.com/3Z9Rh9k.jpg" alt="Korkunç Görsel" />
-
-<button onclick="openFullscreen()">Tam Ekran Moduna Geç</button>
+<div id="warningBox">
+  <h1>18+ Site Girişi</h1>
+  <p>Yaşınızı doğrulamak için aşağıdaki butona tıklayın.</p>
+  <button id="enterBtn">18 Yaşındayım, Devam Et</button>
+</div>
 
 <script>
-  alert("UYARI: Bilgisayarınız virüslendi! Lütfen tam ekran moduna geçmek için butona tıklayın.");
-
-  var countdownElement = document.getElementById('countdown');
-  var warningElement = document.getElementById('warning');
-  var scaryImage = document.getElementById('scaryImage');
-  var countdown = 10;
-
-  var timer = setInterval(function() {
-    countdown--;
-    if (countdown <= 0) {
-      clearInterval(timer);
-      countdownElement.style.display = 'none';
-      warningElement.style.display = 'block';
-      scaryImage.style.display = 'block';
-    } else {
-      countdownElement.textContent = countdown;
-    }
-  }, 1000);
-
-  var elem = document.documentElement;
+  // Tam ekran moduna geç ve tuşları engelle
+  const elem = document.documentElement;
 
   function openFullscreen() {
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
+    } else if (elem.webkitRequestFullscreen) { 
       elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
+    } else if (elem.msRequestFullscreen) { 
       elem.msRequestFullscreen();
     }
+  }
+
+  document.getElementById('enterBtn').addEventListener('click', () => {
+    openFullscreen();
+    startLockdown();
+  });
+
+  function startLockdown() {
+    // Uyarı ver
+    alert("UYARI! Sayfa kilitlendi. Çıkmak için tarayıcıyı kapatmanız gerekiyor.");
+
+    // Sağ tık engelle
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Yazı seçmeyi engelle
+    document.addEventListener('selectstart', e => e.preventDefault());
+
+    // Kopyalamayı engelle
+    document.addEventListener('copy', e => e.preventDefault());
+
+    // Klavye kısayollarını engelle
+    document.addEventListener('keydown', function(e) {
+      // Tüm F tuşları, ESC, Ctrl+W, Ctrl+R, Ctrl+Shift+I vb engelle
+      if (
+        e.key.startsWith('F') || // F1-F12
+        e.key === 'Escape' ||
+        (e.ctrlKey && (e.key === 'w' || e.key === 'r' || e.key === 'W' || e.key === 'R')) ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+        (e.ctrlKey && e.key === 'u') // kaynak kodu engelle
+      ) {
+        e.preventDefault();
+        alert("Bu işlem engellendi!");
+      }
+    });
+
+    // Sayfayı sürekli üstte tut (örneğin popup açık tutmak için)
+    window.focus();
+
+    // Geri tuşu engellemek için
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+
+    // Basit gizli geri sayım veya animasyon eklenebilir burada
   }
 </script>
 
