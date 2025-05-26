@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<title>Şaka Sitesi</title>
+<title>Korkunç Şaka Sitesi</title>
 <style>
   body {
     background: black;
@@ -11,14 +11,28 @@
     text-align: center;
     padding-top: 50px;
   }
+  #countdown {
+    font-size: 5em;
+    margin-bottom: 20px;
+  }
   #warning {
-    font-size: 2em;
+    font-size: 3em;
+    font-weight: bold;
+    display: none;
+    margin-bottom: 20px;
     animation: blink 1s infinite;
-    margin-bottom: 30px;
   }
   @keyframes blink {
     0%, 50%, 100% {opacity: 1;}
     25%, 75% {opacity: 0;}
+  }
+  #scaryImage {
+    max-width: 80vw;
+    max-height: 80vh;
+    display: none;
+    margin: 0 auto;
+    border: 5px solid red;
+    border-radius: 10px;
   }
   button {
     font-size: 1.2em;
@@ -28,28 +42,53 @@
     border: none;
     color: white;
     border-radius: 5px;
+    margin-top: 30px;
   }
   button:hover {
     background: darkred;
   }
 </style>
 </head>
-<body onload="alert('UYARI: Bilgisayarınız virüslendi! Tam ekran için butona tıklayın!')">
-  <div id="warning">Bilgisayarınız Virüslendi! Hemen Kapatmayın!</div>
-  <button onclick="openFullscreen()">Tam Ekran Moduna Geç</button>
+<body>
 
-  <script>
-    var elem = document.documentElement;
+<div id="countdown">10</div>
+<div id="warning">VİRÜS BULUNDU!</div>
+<img id="scaryImage" src="https://i.imgur.com/3Z9Rh9k.jpg" alt="Korkunç Görsel" />
 
-    function openFullscreen() {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
-      }
+<button onclick="openFullscreen()">Tam Ekran Moduna Geç</button>
+
+<script>
+  alert("UYARI: Bilgisayarınız virüslendi! Lütfen tam ekran moduna geçmek için butona tıklayın.");
+
+  var countdownElement = document.getElementById('countdown');
+  var warningElement = document.getElementById('warning');
+  var scaryImage = document.getElementById('scaryImage');
+  var countdown = 10;
+
+  var timer = setInterval(function() {
+    countdown--;
+    if (countdown <= 0) {
+      clearInterval(timer);
+      countdownElement.style.display = 'none';
+      warningElement.style.display = 'block';
+      scaryImage.style.display = 'block';
+    } else {
+      countdownElement.textContent = countdown;
     }
-  </script>
+  }, 1000);
+
+  var elem = document.documentElement;
+
+  function openFullscreen() {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  }
+</script>
+
 </body>
 </html>
