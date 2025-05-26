@@ -3,223 +3,586 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GÖKALP & CEMİL - Bisiklet Yarışı</title>
+<title>GÖKALP & CEMİL Oyun Paketi</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
   body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
-    margin: 0; padding: 0;
+    margin: 0; padding: 20px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  header {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin: 40px 0 20px 0;
     user-select: none;
+  }
+  h1 {
+    margin-bottom: 20px;
     text-shadow: 0 0 20px #e0e0e0;
   }
-  .buttons {
-    display: flex;
-    gap: 40px;
+  #menu {
     margin-bottom: 30px;
   }
-  button {
+  #menu button {
     background: #6a7bd8;
     border: none;
     border-radius: 50px;
-    padding: 20px 45px;
-    font-size: 1.5rem;
+    padding: 12px 30px;
+    margin: 5px;
+    font-size: 1.2rem;
     font-weight: 700;
     color: white;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
     box-shadow: 0 0 20px #6a7bd8;
-    user-select: none;
+    transition: background 0.3s ease;
   }
-  button:hover {
+  #menu button:hover {
     background: #4f5ecb;
-    transform: scale(1.05);
-    box-shadow: 0 0 35px #4f5ecb;
   }
-  #dogPhoto {
-    margin-top: 20px;
-    max-width: 400px;
-    border-radius: 15px;
-    box-shadow: 0 0 25px #6a7bd8;
-  }
-  #raceSection {
-    display: none;
+  #gameContainer {
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     background: rgba(255 255 255 / 0.1);
-    border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    user-select: none;
+    border-radius: 20px;
+    min-height: 350px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
   }
-  #track {
+  .hidden { display: none; }
+
+  /* Bisiklet Yarışı */
+  #raceTrack {
     position: relative;
-    height: 120px;
-    background: linear-gradient(90deg, #333 25%, #444 25%, #444 50%, #333 50%, #333 75%, #444 75%, #444 100%);
-    background-size: 50px 100%;
+    height: 150px;
+    background: repeating-linear-gradient(
+      90deg,
+      #333,
+      #333 25px,
+      #444 25px,
+      #444 50px
+    );
     border-radius: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
   .racer {
     position: absolute;
-    bottom: 15px;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 15px #fff;
   }
   #gokalpRacer {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png'); /* bisikletçi simgesi */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+    bottom: 100px;
     left: 0;
-    bottom: 70px;
   }
   #cemilRacer {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/2920/2920793.png'); /* başka bisikletçi simgesi */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/2920/2920793.png');
+    bottom: 30px;
     left: 0;
-    bottom: 10px;
   }
-  #commands {
+  #finishLine {
+    position: absolute;
+    right: 50px;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: gold;
+    box-shadow: 0 0 15px gold;
+    border-radius: 2px;
+  }
+  #raceControls button {
+    margin: 0 10px;
+    padding: 10px 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 30px;
+    border: none;
+    background: #6a7bd8;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px #6a7bd8;
+    user-select: none;
+  }
+  #raceControls button:hover {
+    background: #4f5ecb;
+  }
+  #raceStatus {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  /* Dövüş Oyunu */
+  #fightArea {
+    text-align: center;
+  }
+  #fightLog {
+    height: 150px;
+    background: #111;
+    border-radius: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 1.1rem;
+  }
+  #fightControls button {
+    margin: 0 10px;
+    padding: 10px 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 30px;
+    border: none;
+    background: #d94f4f;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px #d94f4f;
+    user-select: none;
+  }
+  #fightControls button:hover {
+    background: #b33a3a;
+  }
+
+  /* Köpek Resmi */
+  #dogImageContainer {
+    text-align: center;
+  }
+  #dogImage {
+    max-width: 350px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #6a7bd8;
+    margin-top: 15px;
+  }
+
+  /* Hafıza Kartları */
+  #memoryGame {
+    text-align: center;
+  }
+  #memoryGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    grid-gap: 15px;
+    justify-content: center;
+  }
+  .card {
+    width: 80px;
+    height: 80px;
+    background: #444;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #222;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    perspective: 600px;
+  }
+  .cardInner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .card.flipped .cardInner {
+    transform: rotateY(180deg);
+  }
+  .cardFront, .cardBack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+  }
+  .cardFront {
+    background: #6a7bd8;
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    align-items: center;
+    font-size: 2rem;
   }
-  #status {
+  .cardBack {
+    background: #222;
+    transform: rotateY(180deg);
+  }
+
+  /* Tıklama Oyunu */
+  #clickGame {
     text-align: center;
-    font-size: 1.2rem;
+  }
+  #clickButton {
+    background: #6a7bd8;
+    border: none;
+    border-radius: 50px;
+    padding: 20px 50px;
+    font-size: 2rem;
     font-weight: 700;
-    min-height: 40px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 30px #6a7bd8;
+    user-select: none;
+  }
+  #clickCount {
+    margin-top: 20px;
+    font-size: 1.8rem;
+    font-weight: 700;
   }
 </style>
 </head>
 <body>
 
-<header>GÖKALP & CEMİL</header>
+<h1>GÖKALP & CEMİL Oyun Paketi</h1>
 
-<div class="buttons">
-  <button id="gokalpBtn">GÖKALP</button>
-  <button id="cemilBtn">CEMİL</button>
+<div id="menu">
+  <button data-game="race">Bisiklet Yarışı</button>
+  <button data-game="fight">Dövüş Oyunu</button>
+  <button data-game="dog">Köpek Resmi</button>
+  <button data-game="memory">Hafıza Kartları</button>
+  <button data-game="click">Tıklama Oyunu</button>
 </div>
 
-<img id="dogPhoto" src="" alt="Köpek Fotoğrafı" style="display:none;" />
+<div id="gameContainer">
 
-<div id="raceSection">
-  <div id="track">
-    <div id="gokalpRacer" class="racer"></div>
-    <div id="cemilRacer" class="racer"></div>
+  <!-- Bisiklet Yarışı -->
+  <div id="raceGame" class="hidden">
+    <div id="raceTrack">
+      <div id="gokalpRacer" class="racer"></div>
+      <div id="cemilRacer" class="racer"></div>
+      <div id="finishLine"></div>
+    </div>
+    <div id="raceControls">
+      <button data-action="forward">İleri</button>
+      <button data-action="speedup">Hızlan</button>
+      <button data-action="slowdown">Yavaşla</button>
+      <button id="raceResetBtn" style="background:#444; margin-left:20px;">Yeniden Başlat</button>
+    </div>
+    <div id="raceStatus"></div>
   </div>
-  <div id="commands">
-    <button data-action="forward">İleri</button>
-    <button data-action="speedup">Hızlan</button>
-    <button data-action="slowdown">Yavaşla</button>
+
+  <!-- Dövüş Oyunu -->
+  <div id="fightGame" class="hidden">
+    <div id="fightLog"></div>
+    <div id="fightControls">
+      <button data-fight="attack">Saldır</button>
+      <button data-fight="defend">Savun</button>
+      <button data-fight="special">Özel Hamle</button>
+      <button id="fightResetBtn" style="background:#444; margin-left:20px;">Yeniden Başlat</button>
+    </div>
   </div>
-  <div id="status"></div>
+
+  <!-- Köpek Resmi -->
+  <div id="dogGame" class="hidden">
+    <button id="showDogBtn" style="padding: 15px 40px; font-size: 1.3rem; font-weight: 700; background:#6a7bd8; border:none; border-radius:30px; cursor:pointer;">Gökalp'e Tıkla (Köpek Fotoğrafı)</button>
+    <div id="dogImageContainer"></div>
+  </div>
+
+  <!-- Hafıza Kartları -->
+  <div id="memoryGame" class="hidden">
+    <div id="memoryGrid"></div>
+    <button id="memoryResetBtn" style="background:#444; margin-top:20px; padding: 10px 25px; font-weight: 700; border:none; border-radius:30px; cursor:pointer;">Yeniden Başlat</button>
+  </div>
+
+  <!-- Tıklama Oyunu -->
+  <div id="clickGame" class="hidden">
+    <button id="clickButton">Tıkla!</button>
+    <div id="clickCount">Skor: 0</div>
+  </div>
+
 </div>
 
 <script>
-  const gokalpBtn = document.getElementById('gokalpBtn');
-  const cemilBtn = document.getElementById('cemilBtn');
-  const dogPhoto = document.getElementById('dogPhoto');
-  const raceSection = document.getElementById('raceSection');
-  const gokalpRacer = document.getElementById('gokalpRacer');
-  const cemilRacer = document.getElementById('cemilRacer');
-  const commands = document.getElementById('commands');
-  const status = document.getElementById('status');
+  // Menü ve oyun görünürlük yönetimi
+  const menuButtons = document.querySelectorAll('#menu button');
+  const games = {
+    race: document.getElementById('raceGame'),
+    fight: document.getElementById('fightGame'),
+    dog: document.getElementById('dogGame'),
+    memory: document.getElementById('memoryGame'),
+    click: document.getElementById('clickGame'),
+  };
 
-  // Köpek fotoğrafları URL listesi (CC0 - ücretsiz kaynaklardan)
-  const dogImages = [
-    "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=400&q=80"
-  ];
-
-  // Yarış durum değişkenleri
-  let gokalpPos = 0; // px olarak ilerleme
-  let cemilPos = 0;
-  let gokalpSpeed = 10;
-  let cemilSpeed = 8;
-  let raceFinished = false;
-
-  function resetRace() {
-    gokalpPos = 0;
-    cemilPos = 0;
-    gokalpSpeed = 10;
-    cemilSpeed = 8;
-    raceFinished = false;
-    gokalpRacer.style.left = '0px';
-    cemilRacer.style.left = '0px';
-    status.textContent = 'Yarış başladı! Komutları kullanarak yönlendirin.';
+  function hideAllGames() {
+    Object.values(games).forEach(game => game.classList.add('hidden'));
   }
 
-  function updatePositions() {
+  menuButtons.forEach(btn => {
+    btn.onclick = () => {
+      hideAllGames();
+      games[btn.dataset.game].classList.remove('hidden');
+      if(btn.dataset.game === 'race') initRace();
+      else if(btn.dataset.game === 'fight') initFight();
+      else if(btn.dataset.game === 'dog') initDog();
+      else if(btn.dataset.game === 'memory') initMemory();
+      else if(btn.dataset.game === 'click') initClick();
+    };
+  });
+
+  // ======= 1. Bisiklet Yarışı =======
+  const gokalpRacer = document.getElementById('gokalpRacer');
+  const cemilRacer = document.getElementById('cemilRacer');
+  const raceStatus = document.getElementById('raceStatus');
+  const raceButtons = document.querySelectorAll('#raceControls button[data-action]');
+  const raceResetBtn = document.getElementById('raceResetBtn');
+  const finishLineX = 800 - 110; // max 800px container genişliği
+
+  let gokalpPos, cemilPos, gokalpSpeed, cemilSpeed, raceOver, raceInterval;
+
+  function initRace() {
+    clearInterval(raceInterval);
+    gokalpPos = 0; cemilPos = 0;
+    gokalpSpeed = 8; cemilSpeed = 7;
+    raceOver = false;
+    updateRacePositions();
+    raceStatus.textContent = 'Yarış Başladı! İleri, Hızlan, Yavaşla tuşlarıyla GÖKALP’i kontrol et.';
+    raceInterval = setInterval(() => {
+      if(raceOver) return;
+      cemilMove();
+      checkRaceWinner();
+    }, 200);
+  }
+  function updateRacePositions() {
     gokalpRacer.style.left = gokalpPos + 'px';
     cemilRacer.style.left = cemilPos + 'px';
   }
-
-  function checkWinner() {
-    const finishLine = raceSection.clientWidth - gokalpRacer.clientWidth - 10;
-    if (gokalpPos >= finishLine && cemilPos >= finishLine) {
-      raceFinished = true;
-      status.textContent = 'Berabere kaldınız! İkiniz de aynı anda bitirdiniz.';
-    } else if (gokalpPos >= finishLine) {
-      raceFinished = true;
-      status.textContent = 'Tebrikler! GÖKALP kazandı!';
-    } else if (cemilPos >= finishLine) {
-      raceFinished = true;
-      status.textContent = 'Tebrikler! CEMİL kazandı!';
+  function cemilMove() {
+    let moveChance = Math.random();
+    if(moveChance > 0.3) {
+      cemilPos += cemilSpeed + Math.floor(Math.random() * 3);
+      if(cemilPos > finishLineX) cemilPos = finishLineX;
+      updateRacePositions();
+    }
+  }
+  function checkRaceWinner() {
+    if(gokalpPos >= finishLineX && cemilPos >= finishLineX) {
+      raceOver = true;
+      raceStatus.textContent = 'Berabere Kaldınız!';
+      clearInterval(raceInterval);
+    } else if(gokalpPos >= finishLineX) {
+      raceOver = true;
+      raceStatus.textContent = 'Tebrikler! GÖKALP Kazandı!';
+      clearInterval(raceInterval);
+    } else if(cemilPos >= finishLineX) {
+      raceOver = true;
+      raceStatus.textContent = 'CEMİL Kazandı! Daha hızlıydı!';
+      clearInterval(raceInterval);
     }
   }
 
-  gokalpBtn.addEventListener('click', () => {
-    // Köpek fotoğrafı göster
-    const randomIndex = Math.floor(Math.random() * dogImages.length);
-    dogPhoto.src = dogImages[randomIndex];
-    dogPhoto.style.display = 'block';
-
-    // Yarış bölümünü gizle
-    raceSection.style.display = 'none';
+  raceButtons.forEach(btn => {
+    btn.onclick = () => {
+      if(raceOver) return;
+      const action = btn.dataset.action;
+      if(action === 'forward') {
+        gokalpPos += gokalpSpeed;
+        if(gokalpPos > finishLineX) gokalpPos = finishLineX;
+      } else if(action === 'speedup') {
+        gokalpSpeed += 2;
+        raceStatus.textContent = 'GÖKALP hızlandı! Hız: ' + gokalpSpeed;
+      } else if(action === 'slowdown') {
+        if(gokalpSpeed > 2) {
+          gokalpSpeed -= 2;
+          raceStatus.textContent = 'GÖKALP yavaşladı! Hız: ' + gokalpSpeed;
+        } else {
+          raceStatus.textContent = 'Daha fazla yavaşlayamazsın!';
+        }
+      }
+      updateRacePositions();
+      checkRaceWinner();
+    };
   });
 
-  cemilBtn.addEventListener('click', () => {
-    dogPhoto.style.display = 'none';
-    raceSection.style.display = 'block';
-    resetRace();
+  raceResetBtn.onclick = () => {
+    initRace();
+  };
+
+  // ======= 2. Dövüş Oyunu =======
+  const fightLog = document.getElementById('fightLog');
+  const fightButtons = document.querySelectorAll('#fightControls button[data-fight]');
+  const fightResetBtn = document.getElementById('fightResetBtn');
+
+  let playerHP, enemyHP, fightOver;
+
+  function initFight() {
+    playerHP = 100;
+    enemyHP = 100;
+    fightOver = false;
+    fightLog.textContent = 'Dövüş Başladı! Hamlelerini seç: Saldır, Savun, Özel Hamle.\n';
+    updateFightStatus();
+  }
+  function updateFightStatus() {
+    fightLog.textContent += `Senin HP: ${playerHP} | Cemil'in HP: ${enemyHP}\n`;
+    fightLog.scrollTop = fightLog.scrollHeight;
+  }
+  function logFight(msg) {
+    fightLog.textContent += msg + '\n';
+    fightLog.scrollTop = fightLog.scrollHeight;
+  }
+  fightButtons.forEach(btn => {
+    btn.onclick = () => {
+      if(fightOver) return;
+      const action = btn.dataset.fight;
+      let playerDamage = 0;
+      let enemyDamage = 0;
+
+      if(action === 'attack') {
+        playerDamage = Math.floor(Math.random()*15)+5;
+        enemyDamage = Math.floor(Math.random()*12)+3;
+        enemyHP -= playerDamage;
+        playerHP -= enemyDamage;
+        logFight(`Sen saldırdın: ${playerDamage} hasar! Cemil karşılık verdi: ${enemyDamage} hasar!`);
+      } else if(action === 'defend') {
+        enemyDamage = Math.floor(Math.random()*8)+2;
+        playerHP -= Math.floor(enemyDamage/2);
+        logFight(`Savundun! Cemilin saldırısı yarı hasar: ${Math.floor(enemyDamage/2)}`);
+      } else if(action === 'special') {
+        const chance = Math.random();
+        if(chance > 0.5) {
+          enemyDamage = Math.floor(Math.random()*25)+15;
+          enemyHP -= enemyDamage;
+          logFight(`Özel hamlen başarılı! ${enemyDamage} hasar verdin!`);
+        } else {
+          playerDamage = Math.floor(Math.random()*10)+5;
+          playerHP -= playerDamage;
+          logFight(`Özel hamle başarısız! Cemil seni vurdu: ${playerDamage} hasar!`);
+        }
+      }
+
+      if(playerHP <= 0 && enemyHP <= 0) {
+        fightOver = true;
+        logFight("Berabere kaldınız!");
+      } else if(playerHP <= 0) {
+        fightOver = true;
+        logFight("Cemil kazandı!");
+      } else if(enemyHP <= 0) {
+        fightOver = true;
+        logFight("Sen kazandın!");
+      }
+      if(!fightOver) updateFightStatus();
+    };
   });
 
-  commands.addEventListener('click', e => {
-    if (!e.target.matches('button')) return;
-    if (raceFinished) return;
+  fightResetBtn.onclick = () => {
+    initFight();
+  };
 
-    const action = e.target.getAttribute('data-action');
+  // ======= 3. Köpek Resmi =======
+  const showDogBtn = document.getElementById('showDogBtn');
+  const dogImageContainer = document.getElementById('dogImageContainer');
 
-    if (action === 'forward') {
-      gokalpPos += gokalpSpeed;
-      cemilPos += cemilSpeed;
-    } else if (action === 'speedup') {
-      gokalpSpeed += 2;
-      status.textContent = 'GÖKALP hızlandı!';
-    } else if (action === 'slowdown') {
-      gokalpSpeed = Math.max(2, gokalpSpeed - 2);
-      status.textContent = 'GÖKALP yavaşladı!';
+  const dogImages = [
+    'https://images.dog.ceo/breeds/husky/n02110185_1469.jpg',
+    'https://images.dog.ceo/breeds/retriever-golden/n02099601_3006.jpg',
+    'https://images.dog.ceo/breeds/dalmatian/cooper2.jpg',
+    'https://images.dog.ceo/breeds/bulldog-french/n02108915_5059.jpg',
+    'https://images.dog.ceo/breeds/terrier-norwich/n02094258_3466.jpg'
+  ];
+
+  function initDog() {
+    dogImageContainer.innerHTML = '';
+  }
+
+  showDogBtn.onclick = () => {
+    const randomDog = dogImages[Math.floor(Math.random()*dogImages.length)];
+    dogImageContainer.innerHTML = `<img id="dogImage" src="${randomDog}" alt="Köpek Fotoğrafı" />`;
+  };
+
+  // ======= 4. Hafıza Kartları =======
+  const memoryGrid = document.getElementById('memoryGrid');
+  const memoryResetBtn = document.getElementById('memoryResetBtn');
+
+  const emojis = ['🐶','🐱','🐭','🐰','🦊','🐻','🐼','🐨'];
+
+  let cards = [];
+  let firstCard = null;
+  let lockBoard = false;
+  let matchedPairs = 0;
+
+  function initMemory() {
+    cards = [...emojis, ...emojis];
+    shuffle(cards);
+    firstCard = null;
+    lockBoard = false;
+    matchedPairs = 0;
+    memoryGrid.innerHTML = '';
+    cards.forEach((emoji, i) => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.emoji = emoji;
+
+      const cardInner = document.createElement('div');
+      cardInner.classList.add('cardInner');
+
+      const cardFront = document.createElement('div');
+      cardFront.classList.add('cardFront');
+      cardFront.textContent = '?';
+
+      const cardBack = document.createElement('div');
+      cardBack.classList.add('cardBack');
+      cardBack.textContent = emoji;
+
+      cardInner.appendChild(cardFront);
+      cardInner.appendChild(cardBack);
+      card.appendChild(cardInner);
+
+      card.onclick = () => {
+        if(lockBoard) return;
+        if(card === firstCard) return;
+        flipCard(card);
+      };
+
+      memoryGrid.appendChild(card);
+    });
+  }
+  function flipCard(card) {
+    card.classList.add('flipped');
+    if(!firstCard) {
+      firstCard = card;
+      return;
     }
+    // İkinci kart açıldı
+    if(card.dataset.emoji === firstCard.dataset.emoji) {
+      matchedPairs++;
+      firstCard = null;
+      if(matchedPairs === emojis.length) {
+        setTimeout(() => alert('Tebrikler! Tüm eşleşmeleri buldun.'), 300);
+      }
+    } else {
+      lockBoard = true;
+      setTimeout(() => {
+        card.classList.remove('flipped');
+        firstCard.classList.remove('flipped');
+        firstCard = null;
+        lockBoard = false;
+      }, 1000);
+    }
+  }
+  function shuffle(array) {
+    for(let i = array.length-1; i>0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [array[i],array[j]]=[array[j],array[i]];
+    }
+  }
+  memoryResetBtn.onclick = () => initMemory();
 
-    updatePositions();
-    checkWinner();
-  });
+  // ======= 5. Tıklama Oyunu =======
+  const clickButton = document.getElementById('clickButton');
+  const clickCountDisplay = document.getElementById('clickCount');
+  let clickScore;
+
+  function initClick() {
+    clickScore = 0;
+    clickCountDisplay.textContent = 'Skor: 0';
+  }
+  clickButton.onclick = () => {
+    clickScore++;
+    clickCountDisplay.textContent = `Skor: ${clickScore}`;
+  };
+
+  // Sayfa açılır açılmaz ilk oyun gizli, menüden seç
+  hideAllGames();
+
 </script>
 
 </body>
